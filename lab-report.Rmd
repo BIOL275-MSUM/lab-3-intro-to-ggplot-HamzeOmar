@@ -1,6 +1,6 @@
 ---
 title: "Lab 3 Report"
-author: "___"
+author: "Hamze Omar"
 date: "`r format(Sys.Date())`"
 output: github_document
 ---
@@ -9,27 +9,55 @@ Instructions for this lab report can be found on [Your assignment section of Lab
 
 ## Fireflies
 
+
+
+
 > A. Insert an R code chunk and create a graph depicting the frequency distribution of the 35 mass measurements. It should have legible text and appropriate axis labels.
+
+
+```{r}
+library(tidyverse)
+library(auk)                          # load the auk package
+birds <- ebird_taxonomy %>%           # start with the ebird_taxonomy data
+  as_tibble() %>%                     # tibbles print better in the console
+  filter(category == "species")       # remove non-species taxa
+fireflies_data <- read_csv("https://whitlockschluter.zoology.ubc.ca/wp-content/data/chapter02/chap02q19FireflySpermatophoreMass.csv")
+ggplot(data = fireflies_data) +
+  geom_histogram(mapping = aes(x = spermatophoreMass), binwidth = 0.02,
+                 boundary = 0, closed = "left", 
+                 fill = "#C5351B", color = "black") +
+  labs(x = "Spermatophore Mass (mg)", y = "Frequency (number of fireflies)") +
+  scale_y_continuous(expand = expansion(mult = 0.03))+
+  theme_classic() +
+  theme(
+    axis.title = element_text(face = "bold"),
+    axis.text = element_text(color = "black", size = rel(.5))
+  )
+
+```
+
 
 \_\_\_
 
 > B. What type of graph did you choose in part (A)? Why?
 
-\_\_\_
+My gragh came out as histogram since the data is used by bars and different numbers
 
 > C. Describe the shape of the frequency distribution. What are its main features?
 
-\_\_\_
+The gragh could be described as a bell shaped graph.
 
 > D. What term would be used to describe the largest measurement in the frequency distribution? You can refer to the lecture slides, your notes, or the textbook.
 
-\_\_\_
+Median, because the data plots are arranged from high to low.
 
 ## Bird orders
 
 I read the data using the code provided by the instructor. The dataset is from the auk package and was originally named ebird_taxonomy. I converted it to a tibble, removed non-species taxa, and named the new dataset birds.
 
-```{r}
+
+
+```{r fig.height=1.5, fig.width=0.5, message=TRUE, warning=TRUE, paged.print=TRUE}
 library(auk)                          # load the auk package
 birds <- ebird_taxonomy %>%           # start with the ebird_taxonomy data
   as_tibble() %>%                     # tibbles print better in the console
@@ -38,25 +66,43 @@ birds <- ebird_taxonomy %>%           # start with the ebird_taxonomy data
 
 > E. How many bird species are in the new birds dataset? How did you find out?
 
-\_\_\_
+There are 10721 bird species, thoughtfully, I found it by going to the top right box in my R-Studio and then clicked birds data
 
 > H. How many orders are there? You can get this right by counting on the graph, but you will only get full points if you use some code to figure it out.
 
-\_\_\_
+I found these two numbers, first count I found 41 orders, second count I found 42 orders, sorry I couldn't count as much, my eyes are hurting from the screen light.
 
 > F. Insert an R code chunk and create a graph depicting the distribution of orders in the birds dataset. Sort the orders with the most frequent on the left. It should have legible text and appropriate axis labels.
+
+```{r}
+ggplot(data = birds) +
+  geom_bar(mapping = aes(x = fct_infreq(order)), fill = "#E2A76F", 
+           width = .3) +
+  labs(x = "Order", y = "Frequency (log number of bird species)", 
+       title = "Number of bird species in order") +
+  scale_y_log10() +
+  theme_classic(base_size = 12) +
+  theme(
+    axis.title = element_text(face = "bold"),
+    axis.text = element_text(color = "black", size = rel(.7)),
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    axis.ticks.x = element_blank()
+  )
+
+```
+
 
 \_\_\_
 
 > G. What kind of graph did you create? Why?
 
-\_\_\_
+I used bar chart because it's better graphical for categorical variables
 
 ## Links to peer review
 
-I reviewed \_\_\_'s lab report at this URL: \_\_\_
+I reviewed my lab report at this URL: https://github.com/BIOL275-MSUM/lab-3-intro-to-ggplot-HamzeOmar.git
 
-\_\_\_ reviewed my lab report at this URL: \_\_\_
+I couldn't find someone so that I might review their lab report, however I'll review Simoen's or Michael's, I'm planning on working with them.
 
 ## Session Info
 
